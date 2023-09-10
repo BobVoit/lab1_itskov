@@ -8,7 +8,6 @@ def main():
     count = 100
     # n = int(input("Введите количество испытаний: ")) #13
     # p = float(input("Введите значение вероятности: ")) #0.82
-
     n = 13
     p = 0.82
 
@@ -21,18 +20,15 @@ def main():
 
     input_data = [random.random() for _ in range(count)]
 
-    # print("\n".join([str(element) for element in input_data]))
     FileWrire.write_in_file("input/input_data.txt", "\n".join([str(element) for element in input_data]))
 
     for value in input_data:
-        # gamma = random.random()
         index = d.get_index_of_interval(value)
         test_statistics[index] += 1
 
     for i in range(len(test_statistics)):
         test_statistics[i] /= 100
 
-    # data = pandas.Series(test_statistics)
     print(test_statistics)
 
     plt.bar([index for index in range(n+1)], test_statistics, 0.9)
