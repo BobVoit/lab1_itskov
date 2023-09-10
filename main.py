@@ -2,40 +2,43 @@ import random
 import pandas
 import matplotlib.pyplot as plt
 from distribution import Distribution
+from files import FileWrire
 
-def binomial_distribution(p, n, m):
-    return math.comb(n, m) * (p**m) * ((1 - p)**(n-m))
+def main():
+    count = 100
+    # n = int(input("Введите количество испытаний: ")) #13
+    # p = float(input("Введите значение вероятности: ")) #0.82
 
-def new_point(p, n, m):
-    return (((n - m) * p) / ((m + 1) * (1 - p))) * binomial_distribution(p, n, m)
+    n = 13
+    p = 0.82
 
-count = 100
-# n = int(input("Введите количество испытаний: ")) #13
-# p = float(input("Введите значение вероятности: ")) #0.82
+    if p < 0 or p > 1:
+        raise Exception("Значение вероятности введено некорректно. Значение должно находится в промежутке [0; 1]")
 
-n = 13
-p = 0.82
+    test_statistics = [0 for _ in range(n + 1)]
 
-if p < 0 or p > 1:
-    raise Exception("Значение вероятности введено некорректно. Значение должно находится в промежутке [0; 1]")
+    d = Distribution(p, n)
 
-test_statistics = [0 for _ in range(n + 1)]
+    input_data = [random.random() for _ in range(count)]
 
-d = Distribution(p, n)
+    # print("\n".join([str(element) for element in input_data]))
+    FileWrire.write_in_file("input/input_data.txt", "\n".join([str(element) for element in input_data]))
 
-for i in range(count):
-    gamma = random.random()
-    index = d.get_index_of_interval(gamma)
-    test_statistics[index] += 1
+    for value in input_data:
+        # gamma = random.random()
+        index = d.get_index_of_interval(value)
+        test_statistics[index] += 1
 
-for i in range(len(test_statistics)):
-    test_statistics[i] /= 100
+    for i in range(len(test_statistics)):
+        test_statistics[i] /= 100
 
-# data = pandas.Series(test_statistics)
-print(test_statistics)
+    # data = pandas.Series(test_statistics)
+    print(test_statistics)
 
-plt.bar([index for index in range(n+1)], test_statistics)
-plt.title('Гистограмма распределения')
-plt.xlabel('X')
-plt.ylabel('Y')
-plt.show()
+    plt.bar([index for index in range(n+1)], test_statistics, 0.9)
+    plt.title('Гистограмма распределения')
+    plt.xlabel('X')
+    plt.ylabel('Y')
+    plt.show()
+
+main()
