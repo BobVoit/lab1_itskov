@@ -8,7 +8,7 @@ class Distribution:
         self.__m = 0
         self.__p = p
         self.__n = n
-        self.__points.append(self.__binomial_distribution())
+        self.__points.append(self.__binomial_distribution(self.__m, self.__n, self.__p))
         self.__current_sum = sum(self.__points)
 
     def __str__(self):
@@ -36,16 +36,27 @@ class Distribution:
                 return self.__m
 
     # 
+    def get_discrete_series(self):
+        result = []
+        sum_values = 0
+        for i in range(self.__n + 1):
+            value = self.__binomial_distribution(i, self.__n, self.__p)
+            sum_values += value
+            result.append(sum_values)
+        return result
+
+    # 
     def __add_point(self):
         if self.__m >= self.__n:
             return
         else:
-            new_point = (((self.__n - self.__m) * self.__p) / ((self.__m + 1) * (1 - self.__p))) * self.get_last()
+            # new_point = (((self.__n - self.__m) * self.__p) / ((self.__m + 1) * (1 - self.__p))) * self.get_last()
+            self.__m += 1
+            new_point = self.__binomial_distribution(self.__m, self.__n, self.__p)
             self.__current_sum += new_point
             self.__points.append(self.__current_sum)
-            self.__m += 1
 
     # 
-    def __binomial_distribution(self):
-        return math.comb(self.__n, self.__m) * (self.__p**self.__m) * ((1 - self.__p)**(self.__n - self.__m))
+    def __binomial_distribution(self, m, n, p):
+        return math.comb(n, m) * (p**m) * ((1 - p)**(n - m))
 

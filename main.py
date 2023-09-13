@@ -5,11 +5,11 @@ from distribution import Distribution
 from files import FileWrire
 
 def main():
-    count = 100
+    count = 50000
     # n = int(input("Введите количество испытаний: ")) #13
     # p = float(input("Введите значение вероятности: ")) #0.82
     n = 13
-    p = 0.82
+    p = 0.18
 
     if p < 0 or p > 1:
         raise Exception("Значение вероятности введено некорректно. Значение должно находится в промежутке [0; 1]")
@@ -27,14 +27,15 @@ def main():
         test_statistics[index] += 1
 
     for i in range(len(test_statistics)):
-        test_statistics[i] /= 100
+        test_statistics[i] /= count
 
     print(test_statistics)
+    print(d.get_discrete_series())
 
     plt.bar([index for index in range(n+1)], test_statistics, 0.9)
     plt.title('Гистограмма распределения')
-    plt.xlabel('X')
-    plt.ylabel('Y')
+    plt.xlabel('m')
+    plt.ylabel('Частоты')
     plt.show()
 
 main()
